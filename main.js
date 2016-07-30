@@ -20,7 +20,7 @@ var compiler = webpack({
 });
 
 compiler.run(function(err, stats){
-
+if (err) throw err;
 });
 app.use(express.static('public'));
 

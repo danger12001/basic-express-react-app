@@ -44,23 +44,35 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var MenuItem = __webpack_require__(1);
-	ReactDOM.render(React.createElement('ul', null, MenuItem(), MenuItem()), document.getElementById('app'));
+	var activeItem = MenuItem("");
+	var inactiveItem = MenuItem("isActive={true}");
+
+	ReactDOM.render(React.createElement('ul', null, activeItem, inactiveItem), document.getElementById('app'));
 
 /***/ },
 /* 1 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
-	function MenuItem() {
+	function MenuItem(props) {
+	  console.log(props);
+	  var style = {
+	    color: props.isActive ? 'red' : 'green'
+	  };
 	  return React.createElement(
-	    "li",
-	    null,
-	    "Menu Item"
+	    'li',
+	    { style: style },
+	    'This is great!'
 	  );
+	  //   if (isActive) {
+	  //       return <li>This is awesome!</li>
+	  //     } else {
+	  //       return <li>This is great!</li>
+	  //     }
 	}
 
 	module.exports = MenuItem;
