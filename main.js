@@ -3,6 +3,7 @@ var app = express();
 var fs = require('fs');
 var index = String(fs.readFileSync("lib/index.html"));
 
+
 var webpack = require("webpack");
 var compiler = webpack({
   module : {
@@ -14,15 +15,17 @@ var compiler = webpack({
   },
   entry: './src/js/index.js',
   output: {
-    path: './public/js',
+    path: './src/client/public/js',
     filename: 'app.js'
   }
 });
 
 compiler.run(function(err, stats){
-
+if(err) console.log(err);
+console.log("error: ",err);
+// console.log("stats: ",stats);
 });
-app.use(express.static('public'));
+app.use(express.static('./src/client/public'));
 
 app.get('/',function(req, res){
   res.send(index);

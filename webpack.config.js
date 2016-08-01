@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var path = require('path');
 var babel = require('babel-loader');
 
-var BUILD_DIR = path.resolve(__dirname, 'lib/');
+var BUILD_DIR = path.resolve(__dirname, 'src/client/public/js/');
 var APP_DIR = path.resolve(__dirname, 'src/js/');
 
 var config = {
