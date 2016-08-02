@@ -44,28 +44,77 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	var ListItem = __webpack_require__(1);
-	var listBox = __webpack_require__(2);
-	var list = __webpack_require__(3);
-	var addForm = __webpack_require__(4);
+	// var ListItem = require('./listItem');
 
-	ReactDOM.render(
-	//  React.createElement('ul', null, <ListItem checked={true}/>),
-	React.createElement(
-	  'listBox',
-	  null,
-	  React.createElement(
-	    'list',
-	    null,
-	    React.createElement(ListItem, null)
-	  ),
-	  React.createElement('addForm', null)
-	), document.getElementById('app'));
+	var listBox = __webpack_require__(1);
+	var items = ["test", "testing"];
+	// var list = require('./list');
+	// var addForm = require('./addForm');
+	ReactDOM.render(React.createElement("listBox", { items: items }), document.getElementById('app'));
 
 /***/ },
 /* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var list = __webpack_require__(2);
+	// var addForm = require('./addForm');
+
+	var listBox = React.createClass({
+	  displayName: "listBox",
+
+
+	  render: function render() {
+	    var items = this.state.items;
+	    return React.createElement(
+	      "div",
+	      { className: "listBox" },
+	      React.createElement(
+	        "h1",
+	        null,
+	        "TO DO"
+	      ),
+	      React.createElement("list", { items: items }),
+	      "// ",
+	      React.createElement("addForm", null)
+	    );
+	  }
+	});
+	module.exports = listBox;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var ListItem = __webpack_require__(3);
+	var list = React.createClass({
+	  displayName: "list",
+
+	  render: function render() {
+	    var items = this.props.items;
+
+	    return React.createElement(
+	      "div",
+	      { className: "list" },
+	      React.createElement(
+	        "ul",
+	        null,
+	        items.map(function (item, index) {
+	          return React.createElement(ListItem, { key: index, text: items, checked: false });
+	        })
+	      )
+	    );
+	  }
+	});
+	module.exports = list;
+
+/***/ },
+/* 3 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -75,7 +124,8 @@
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      checked: true
+	      checked: true,
+	      text: 'text'
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -96,6 +146,7 @@
 	  },
 
 	  render: function render() {
+
 	    var style = { color: this.state.checked ? 'black' : 'grey', textDecoration: this.state.checked ? "none" : "line-through" };
 	    if (this.state.checked) {
 	      // return <li style={style}>This is Active </li>;
@@ -107,7 +158,7 @@
 	        React.createElement(
 	          'p',
 	          { style: style },
-	          'Not Active'
+	          this.props.text
 	        )
 	      );
 	    } else {
@@ -119,7 +170,7 @@
 	        React.createElement(
 	          'p',
 	          { style: style },
-	          'Active'
+	          this.props.text
 	        )
 	      );
 	      // return <li style={style} onClick={this.activeToggle}>This is Not Active</li>;
@@ -129,83 +180,6 @@
 	});
 
 	module.exports = listItem;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var listBox = React.createClass({
-	  displayName: "listBox",
-
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "listBox" },
-	      React.createElement(
-	        "h1",
-	        null,
-	        "TO DO "
-	      )
-	    );
-	  }
-	});
-	module.exports = listBox;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var list = React.createClass({
-	  displayName: "list",
-
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "list" },
-	      React.createElement("ul", null)
-	    );
-	  }
-	});
-	module.exports = list;
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var addForm = React.createClass({
-	  displayName: 'addForm',
-
-	  getInitialState: function getInitialState() {
-	    return { text: '' };
-	  },
-
-	  handleTextChange: function handleTextChange(e) {
-	    this.setState({ text: e.target.value });
-	  },
-	  handleSubmit: function handleSubmit(e) {
-	    e.preventDefault();
-	    var text = this.state.text.trim();
-	    if (!text) {
-	      return;
-	    }
-	    this.setState({ text: '' });
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'addForm' },
-	      React.createElement('input', { type: 'text', placeholder: 'Insert Item here', value: this.state.text, onChange: this.handleTextChange }),
-	      React.createElement('input', { type: 'submit' })
-	    );
-	  }
-	});
-	module.exports = addForm;
 
 /***/ }
 /******/ ]);
