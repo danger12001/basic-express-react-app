@@ -44,142 +44,83 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	// var ListItem = require('./listItem');
-
-	var listBox = __webpack_require__(1);
-	var items = ["test", "testing"];
-	// var list = require('./list');
-	// var addForm = require('./addForm');
-	ReactDOM.render(React.createElement("listBox", { items: items }), document.getElementById('app'));
+	var TodoApp = __webpack_require__(1);
+	ReactDOM.render(React.createElement(TodoApp, null), document.getElementById('app'));
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var list = __webpack_require__(2);
-	// var addForm = require('./addForm');
+	var TodoList = __webpack_require__(2);
+	var TodoApp = React.createClass({
+	  displayName: 'TodoApp',
 
-	var listBox = React.createClass({
-	  displayName: "listBox",
-
-
+	  getInitialState: function getInitialState() {
+	    return { items: [], text: '' };
+	  },
+	  onChange: function onChange(e) {
+	    this.setState({ text: e.target.value });
+	  },
+	  handleSubmit: function handleSubmit(e) {
+	    e.preventDefault();
+	    var nextItems = this.state.items.concat([{ text: this.state.text, id: Date.now() }]);
+	    var nextText = '';
+	    this.setState({ items: nextItems, text: nextText });
+	  },
 	  render: function render() {
-	    var items = this.state.items;
 	    return React.createElement(
-	      "div",
-	      { className: "listBox" },
+	      'div',
+	      null,
 	      React.createElement(
-	        "h1",
+	        'h3',
 	        null,
-	        "TO DO"
+	        'TODO'
 	      ),
-	      React.createElement("list", { items: items }),
-	      "// ",
-	      React.createElement("addForm", null)
-	    );
-	  }
-	});
-	module.exports = listBox;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var ListItem = __webpack_require__(3);
-	var list = React.createClass({
-	  displayName: "list",
-
-	  render: function render() {
-	    var items = this.props.items;
-
-	    return React.createElement(
-	      "div",
-	      { className: "list" },
+	      React.createElement(TodoList, { items: this.state.items }),
 	      React.createElement(
-	        "ul",
-	        null,
-	        items.map(function (item, index) {
-	          return React.createElement(ListItem, { key: index, text: items, checked: false });
-	        })
+	        'form',
+	        { onSubmit: this.handleSubmit },
+	        React.createElement('input', { onChange: this.onChange, value: this.state.text }),
+	        React.createElement(
+	          'button',
+	          null,
+	          'Add #' + (this.state.items.length + 1)
+	        )
 	      )
 	    );
 	  }
 	});
-	module.exports = list;
+	module.exports = TodoApp;
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
-	var listItem = React.createClass({
-	  displayName: 'listItem',
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      checked: true,
-	      text: 'text'
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    if (this.props.checked) {
-	      return {
-	        checked: true
-	      };
-	    } else {
-	      return {
-	        checked: false
-	      };
-	    }
-	  },
-	  activeToggle: function activeToggle() {
-	    this.setState({
-	      checked: !this.state.checked
-	    });
-	  },
+	var TodoList = React.createClass({
+	  displayName: "TodoList",
 
 	  render: function render() {
-
-	    var style = { color: this.state.checked ? 'black' : 'grey', textDecoration: this.state.checked ? "none" : "line-through" };
-	    if (this.state.checked) {
-	      // return <li style={style}>This is Active </li>;
+	    var createItem = function createItem(item) {
 	      return React.createElement(
-	        'li',
-	        null,
-	        React.createElement('input', { onClick: this.activeToggle, type: 'checkbox' }),
-	        ' ',
-	        React.createElement(
-	          'p',
-	          { style: style },
-	          this.props.text
-	        )
+	        "li",
+	        { key: item.id },
+	        item.text
 	      );
-	    } else {
-	      return React.createElement(
-	        'li',
-	        null,
-	        React.createElement('input', { onClick: this.activeToggle, type: 'checkbox' }),
-	        ' ',
-	        React.createElement(
-	          'p',
-	          { style: style },
-	          this.props.text
-	        )
-	      );
-	      // return <li style={style} onClick={this.activeToggle}>This is Not Active</li>;
-	    }
+	    };
+	    return React.createElement(
+	      "ul",
+	      null,
+	      this.props.items.map(createItem)
+	    );
 	  }
-
 	});
-
-	module.exports = listItem;
+	module.exports = TodoList;
 
 /***/ }
 /******/ ]);
